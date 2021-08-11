@@ -1,4 +1,4 @@
-# Node Restful 
+# Node Restful API
 # EXPRESS APPLICATION
 
 ### Setup
