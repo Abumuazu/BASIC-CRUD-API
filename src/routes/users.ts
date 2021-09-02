@@ -86,4 +86,61 @@ try{
 res.status(200).send(` ${organization} organization  with the id: ${id} has been added to the database `)
 })
 
+
+  
+  // UPDATING the database
+  
+  router.patch('/:id', function(req:any, res:any, next:any) {
+    const {id} = req.params
+    
+  
+    const findUser = database.find((x:users) => x.id === +(id))
+    const findUserIndex = database.findIndex((x:users) => x.id === +(id))
+    console.log(findUser)
+    console.log(findUserIndex)
+  
+      if (!findUser){
+        res.status(404).send("user not found")
+      }else {
+        const { organization,
+          products,
+          createdAt,
+          marketValue, 
+          address, 
+          ceo,
+          country, 
+          id,
+          noOfEmployees,
+          employees}    =    database[findUserIndex]
+  
+        const updatedUser = {
+          organization: req.body.organization || organization,
+          createdAt: createdAt,
+          updatedAt: new Date().toString,
+          products: req.body.products || products ,
+          marketValue: req.body.marketValue || marketValue,
+          address: req.body.address || address,
+          ceo: req.body.ceo || ceo,
+          country: req.body.country || country,
+          id: id,
+          noOfEmployees : req.body.noOfEmployees || noOfEmployees,
+          employees: req.body.employees || employees,
+  
+        }
+      
+      database[findUserIndex] = updatedUser
+  
+      try{
+        fs.writeFile("/Users/e/Desktop/week-6-node-008-Abumuazu/lib/database.json", JSON.stringify(database, null, 2), ((err:any, data:any) =>{
+          if(err) throw err
+          console.log("data successfully updated ")
+        }))
+      } catch (error) {
+        console.error("error")
+      }
+    }
+    res.status(200).send(`user with id${id} profile has been updated successfully`)
+  })
+  
+  
 module.exports = router;
