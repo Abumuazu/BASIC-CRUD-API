@@ -143,4 +143,26 @@ res.status(200).send(` ${organization} organization  with the id: ${id} has been
   })
   
   
+  
+  
+  
+  // DELETING from the database
+  router.delete('/:id', function (req:any, res:any, next:any) {
+    const {id} = req.params
+    const findUser = database.find((x:users) => x.id === +(id))
+     const newDatabase:users = database.filter((x:users) => x.id != +(id))
+  
+     
+  if (!findUser) {
+    res.status(404).send(`organization with the id ${id} was not found`)
+  }else {
+      fs.writeFile("/Users/e/Desktop/week-6-node-008-Abumuazu/lib/database.json", JSON.stringify(newDatabase, null, 2), ((err:any, data:any) =>{
+        if(err) throw err
+        console.log("data successfully updated ")
+      }))
+    
+  }
+  res.status(200).send(` organization  with the  has been deleted from the database `)
+  })
+  
 module.exports = router;
